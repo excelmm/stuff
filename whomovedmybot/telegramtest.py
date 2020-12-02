@@ -138,18 +138,22 @@ def generateImage(imagename, username, handle):
         if found == 1:
             break
             
+    jpg = 0
     try:
-        persist_image(imagename, image_url)
+        # persist_image(imagename, image_url)
+        image_content = requests.get(image_url).content
+        image_file = io.BytesIO(image_content)
+        overlay = Image.open(image_file).convert('RGB')
+        jpg = 1
     except:
         pass
     
     img = Image.open("template.jpg")
-    jpg = 0
-    try:
-        overlay = Image.open(imagename + ".png")
-    except:
-        overlay = Image.open(imagename + ".jpg")
-        jpg = 1
+    # try:
+    #     overlay = Image.open(imagename + ".png")
+    # except:
+    #     overlay = Image.open(imagename + ".jpg")
+    #     jpg = 1
     
     w, h = overlay.size
     bw, bh = img.size

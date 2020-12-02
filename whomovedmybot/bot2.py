@@ -51,7 +51,7 @@ def main():
     TOKEN = '1472266836:AAHRgGYGogHlbfGUM9meOqs21zDGeQ6snKQ'
     
     global updater
-    updater = Updater(token = '1472266836:AAHRgGYGogHlbfGUM9meOqs21zDGeQ6snKQ', use_context=True)
+    updater = Updater(token=TOKEN, use_context=True)
     dispatcher = updater.dispatcher
     
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -142,22 +142,18 @@ def generateImage(imagename, username, handle):
         if found == 1:
             break
             
-    jpg = 0
     try:
-        # persist_image(imagename, image_url)
-        image_content = requests.get(image_url).content
-        image_file = io.BytesIO(image_content)
-        overlay = Image.open(image_file).convert('RGB')
-        jpg = 1
+        persist_image(imagename, image_url)
     except:
         pass
     
     img = Image.open("template.jpg")
-    # try:
-    #     overlay = Image.open(imagename + ".png")
-    # except:
-    #     overlay = Image.open(imagename + ".jpg")
-    #     jpg = 1
+    jpg = 0
+    try:
+        overlay = Image.open(imagename + ".png")
+    except:
+        overlay = Image.open(imagename + ".jpg")
+        jpg = 1
     
     w, h = overlay.size
     bw, bh = img.size
