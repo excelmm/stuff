@@ -83,7 +83,7 @@ def send_image(update, context):
     commandtext = update.message.text
     username = update.message.from_user.first_name
     handle = update.message.from_user.username
-    imagename = ''
+    # imagename = ''
     
     for i in range(len(trigger_phrases)):
         commandtext = commandtext.replace(trigger_phrases[i], "")
@@ -140,7 +140,7 @@ def generateImage(imagename, username, handle):
             
     try:
         persist_image(imagename, image_url)
-    except Error as e:
+    except:
         pass
     
     img = Image.open("template.jpg")
