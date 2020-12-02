@@ -51,7 +51,7 @@ def main():
     TOKEN = '1472266836:AAHRgGYGogHlbfGUM9meOqs21zDGeQ6snKQ'
     
     global updater
-    updater = Updater(token = '1472266836:AAHRgGYGogHlbfGUM9meOqs21zDGeQ6snKQ', use_context=True)
+    updater = Updater(token=TOKEN, use_context=True)
     dispatcher = updater.dispatcher
     
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -96,17 +96,19 @@ def send_image(update, context):
     
 
     i = 0
+    result = ''
     while True:
         if i == 2:
             break
         try:
-            generateImage(commandtext, username, handle)
+            result = generateImage(commandtext, username, handle)
             break
         except Exception as e:
             print("Error:", e)
             i += 1
     
-    context.bot.send_photo(chat_id=update.effective_chat.id, photo=open('result.jpg','rb'))
+    # context.bot.send_photo(chat_id=update.effective_chat.id, photo=open('result.jpg','rb'))
+    context.bot.send_photo(chat_id=update.effective_chat.id, photo=result)
     
 def stop(update, context):
     exit()
@@ -142,6 +144,10 @@ def generateImage(imagename, username, handle):
         if found == 1:
             break
             
+    image_content = requests.get('https://ibb.co/zFFCzZm').content
+    image_file = io.BytesIO(image_content)
+    img = Image.open(image_file).convert('RGB')
+    
     jpg = 0
     try:
         # persist_image(imagename, image_url)
@@ -151,8 +157,7 @@ def generateImage(imagename, username, handle):
         jpg = 1
     except:
         pass
-    
-    img = Image.open("template.jpg")
+
     # try:
     #     overlay = Image.open(imagename + ".png")
     # except:
@@ -184,8 +189,8 @@ def generateImage(imagename, username, handle):
     elif handle is not None:
         draw.text(((bw-W)/2 + 50,(bh-H)/2 + 920), username, (0, 0, 0), font=font)
     
-    back_im.save('result.jpg', quality=90)
-    
+    # back_im.save('result.jpg', quality=90)
+    return back_im
 
 def persist_image(imagename, url:str):
     try:
