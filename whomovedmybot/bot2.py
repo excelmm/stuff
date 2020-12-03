@@ -4,7 +4,7 @@ import selenium
 import time
 import requests
 import logging
-import numpy as np
+# import numpy as np
 import telegram
 from google_images_download import google_images_download
 from PIL import Image
@@ -44,7 +44,8 @@ def main():
     options.add_argument("--headless")
     
     global driver
-    driver = webdriver.Chrome(options=options)
+    # driver = webdriver.Chrome(options=options)
+    driver = webdriver.PhantomJS()
     driver.get("https://images.google.com/")
 
     PORT = int(os.environ.get('PORT', 5000))
