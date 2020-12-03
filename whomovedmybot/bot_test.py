@@ -27,6 +27,7 @@ def main():
 
     driver = webdriver.Chrome(options=options)
     driver.get("https://images.google.com/")
+    imagename = ''
 
     inputBox = driver.find_element_by_name("q")
     inputBox.send_keys(imagename)

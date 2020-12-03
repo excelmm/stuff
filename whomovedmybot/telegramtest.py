@@ -92,6 +92,7 @@ def send_image(update, context):
     
 
     i = 0
+    # result = ''
     while True:
         if i == 2:
             break
@@ -103,6 +104,7 @@ def send_image(update, context):
             i += 1
     
     context.bot.send_photo(chat_id=update.effective_chat.id, photo=open('result.jpg','rb'))
+    # context.bot.send_photo(chat_id=update.effective_chat.id, photo=result)
     
 def stop(update, context):
     exit()
@@ -138,18 +140,25 @@ def generateImage(imagename, username, handle):
         if found == 1:
             break
             
-    try:
-        persist_image(imagename, image_url)
-    except:
-        pass
+    image_content = requests.get('https://ibb.co/zFFCzZm').content
+    image_file = io.BytesIO(image_content)
+    img = Image.open(image_file).convert('RGB')
     
-    img = Image.open("template.jpg")
     jpg = 0
     try:
-        overlay = Image.open(imagename + ".png")
-    except:
-        overlay = Image.open(imagename + ".jpg")
+        # persist_image(imagename, image_url)
+        image_content = requests.get(image_url).content
+        image_file = io.BytesIO(image_content)
+        overlay = Image.open(image_file).convert('RGB')
         jpg = 1
+    except:
+        pass
+
+    # try:
+    #     overlay = Image.open(imagename + ".png")
+    # except:
+    #     overlay = Image.open(imagename + ".jpg")
+    #     jpg = 1
     
     w, h = overlay.size
     bw, bh = img.size
@@ -177,7 +186,7 @@ def generateImage(imagename, username, handle):
         draw.text(((bw-W)/2 + 50,(bh-H)/2 + 920), username, (0, 0, 0), font=font)
     
     back_im.save('result.jpg', quality=90)
-    
+    # return back_im
 
 def persist_image(imagename, url:str):
     try:
